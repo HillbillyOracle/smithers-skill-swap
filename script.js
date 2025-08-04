@@ -44,12 +44,41 @@ if (loginForm) {
     const messageEl = document.getElementById('message');
     messageEl.textContent = '';
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
         messageEl.textContent = error.message;
         messageEl.style.color = '#ff3344';
         changeEmailContainer?.classList.remove('hidden');
       } else {
+        const {
+          data: profile,
+          error: profileError,
+        } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', data.user.id)
+          .maybeSingle();
+
+        if (profileError) {
+          messageEl.textContent = profileError.message;
+          messageEl.style.color = '#ff3344';
+          changeEmailContainer?.classList.remove('hidden');
+          return;
+        }
+
+        if (!profile) {
+          const { error: insertError } = await supabase
+            .from('profiles')
+            .insert({ id: data.user.id, email: data.user.email });
+
+          if (insertError) {
+            messageEl.textContent = insertError.message || 'Unable to create profile.';
+            messageEl.style.color = '#ff3344';
+            changeEmailContainer?.classList.remove('hidden');
+            return;
+          }
+        }
+
         messageEl.textContent = 'Login successful! 🎉';
         messageEl.style.color = '#00ff99';
         changeEmailContainer?.classList.add('hidden');
