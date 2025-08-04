@@ -89,7 +89,7 @@ if (registerForm) {
         messageEl.textContent = 'Registration successful! Check your email to confirm.';
         messageEl.style.color = '#00ff99';
         setTimeout(() => {
-          window.location.href = 'index.html';
+          window.location.href = 'login.html';
         }, 1000);
       }
     } catch (err) {

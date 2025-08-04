@@ -11,7 +11,14 @@ const mimeTypes = {
 };
 
 const server = http.createServer((req, res) => {
-  let filePath = req.url === '/' ? '/index.html' : req.url;
+  let filePath;
+  if (req.url === '/') {
+    filePath = '/index.html';
+  } else if (req.url === '/login') {
+    filePath = '/login.html';
+  } else {
+    filePath = req.url;
+  }
   const ext = path.extname(filePath);
   const contentType = mimeTypes[ext] || 'text/plain';
   fs.readFile(path.join(__dirname, filePath), (err, content) => {
