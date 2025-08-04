@@ -4,6 +4,34 @@ const supabaseUrl = 'https://your-project-url.supabase.co';
 const supabaseAnonKey = 'your-anon-key';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+async function loadProfile() {
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+  if (!session) {
+    window.location.href = 'index.html';
+    return;
+  }
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', session.user.id)
+    .single();
+  const container = document.querySelector('.login-container');
+  if (error) {
+    container.innerHTML = '<p>Failed to load profile.</p>';
+  } else {
+    container.innerHTML = `
+      <h1>${data.full_name || 'Your Profile'}</h1>
+      <p>Email: ${session.user.email}</p>
+    `;
+  }
+}
+
+if (window.location.pathname.endsWith('profile.html')) {
+  loadProfile();
+}
+
 const loginForm = document.getElementById('loginForm');
 const changeEmailContainer = document.querySelector('.change-email');
 const changeEmailLink = document.getElementById('changeEmail');
