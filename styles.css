@@ -100,6 +100,23 @@ input:focus {
   text-decoration: underline;
 }
 
+.register-link,
+.login-link {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.register-link a,
+.login-link a {
+  color: #00ff99;
+  text-decoration: none;
+}
+
+.register-link a:hover,
+.login-link a:hover {
+  text-decoration: underline;
+}
+
 .hidden {
   display: none;
 }

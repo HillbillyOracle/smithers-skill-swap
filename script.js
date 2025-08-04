@@ -14,6 +14,9 @@ if (loginForm) {
       messageEl.textContent = 'Login successful! 🎉';
       messageEl.style.color = '#00ff99';
       changeEmailContainer?.classList.add('hidden');
+      setTimeout(() => {
+        window.location.href = 'profile.html';
+      }, 500);
     } else {
       messageEl.textContent = 'Invalid email or password';
       messageEl.style.color = '#ff3344';
@@ -42,5 +45,19 @@ if (resetForm) {
     const messageEl = document.getElementById('resetMessage');
     messageEl.textContent = 'If an account with that email exists, a reset link has been sent.';
     messageEl.style.color = '#00ff99';
+  });
+}
+
+const registerForm = document.getElementById('registerForm');
+if (registerForm) {
+  registerForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const email = document.getElementById('registerEmail').value;
+    const messageEl = document.getElementById('registerMessage');
+    messageEl.textContent = 'Registration successful! You can now log in.';
+    messageEl.style.color = '#00ff99';
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1000);
   });
 }
